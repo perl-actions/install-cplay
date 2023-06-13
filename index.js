@@ -38,7 +38,7 @@ var cNext = function cNext() {
 
 cNext.prototype.install_cnext = async function () {
   const cnext = await tc.downloadTool("https://git.io/cnext");
-  core.setOutput("cnext", cnext);
+  core.info("cnext", cnext);
   await this.do_exec(["perl", cnext, "self-install"]);
   return;
 };
@@ -61,7 +61,7 @@ cNext.prototype.do_exec = async function (cmd) {
   const sudo = is_true(core.getInput("sudo"));
   const bin = sudo ? "sudo" : cmd.shift();
 
-  console.log(`do_exec: ${bin}`);
+  core.info(`do_exec: ${bin}`);
 
   await exec.exec(bin, cmd);
 };
@@ -71,7 +71,7 @@ cNext.prototype.run = async function () {
 
   // Get the JSON webhook payload for the event that triggered the workflow
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
-  //console.log(`The event payload: ${payload}`);
+  //core.info(`The event payload: ${payload}`);
 
   // input arguments
   const install = core.getInput("install");
@@ -88,7 +88,7 @@ cNext.prototype.run = async function () {
   }
 
   if (install !== null && install.length) {
-    console.log(`install: ${install}!`);
+    core.info(`install: ${install}!`);
     const list = install.split("\n");
     var cmd = ["cnext", "install", "-d", w_test];
     if (w_args.length) {
@@ -99,7 +99,7 @@ cNext.prototype.run = async function () {
   }
 
   if (cpanfile !== null && cpanfile.length) {
-    console.log(`cpanfile: ${cpanfile}!`);
+    core.info(`cpanfile: ${cpanfile}!`);
     var cmd = ["cnext", "cpanfile", "-d", w_test];
     if (w_args.length) {
       cmd = cmd.concat(w_args);
@@ -109,7 +109,7 @@ cNext.prototype.run = async function () {
   }
 
   if (tarball !== null && tarball.length) {
-    console.log(`tarball: ${tarball}!`);
+    core.info(`tarball: ${tarball}!`);
     var cmd = ["cnext", "from-tarball", "-d", w_test];
     if (w_args.length) {
       cmd = cmd.concat(w_args);
